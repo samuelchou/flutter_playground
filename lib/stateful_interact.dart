@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                       builder: (context) => ChildFulPage(intVal: val)));
               debugPrint("result now: $result");
-              setState(() { });
+              setState(() {});
             },
           ),
           Text(showText),
@@ -113,23 +113,20 @@ class ChildFulPage extends StatefulWidget {
 }
 
 class _ChildFulPageState extends State<ChildFulPage> {
-
   @override
   Widget build(BuildContext context) {
-
     return Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Passed value ${widget.intVal}"),
-            ElevatedButton(
-              child: const Text('Go back'),
-              onPressed: () {
-                Navigator.pop(context, widget.intVal);
-              },
-            ),
-          ],
-        ));
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Passed value ${widget.intVal}"),
+        ElevatedButton(
+          child: const Text('Go back'),
+          onPressed: () {
+            Navigator.pop(context, widget.intVal);
+          },
+        ),
+      ],
+    ));
   }
 }
-
