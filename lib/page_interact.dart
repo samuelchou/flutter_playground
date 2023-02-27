@@ -23,36 +23,51 @@ class HomePage extends StatelessWidget {
         child: ElevatedButton(
       child: const Text('Go to Page Child'),
       onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ChildPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ChildPage(intVal: 365)));
       },
     ));
   }
 }
 
 class ChildPage extends StatelessWidget {
-  const ChildPage({Key? key}) : super(key: key);
+  final int intVal;
+  final String stringVal;
+
+  const ChildPage(
+      {Key? key, required this.intVal, this.stringVal = "Hello Page Child"})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Page Child')),
-      body: const ChildPageContent(),
+      appBar: AppBar(title: Text(stringVal)),
+      body: ChildPageContent(intVal: intVal),
     );
   }
 }
 
 class ChildPageContent extends StatelessWidget {
-  const ChildPageContent({Key? key}) : super(key: key);
+  final int intVal;
+
+  const ChildPageContent({Key? key, this.intVal = 0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: ElevatedButton(
-      child: const Text('Go back'),
-      onPressed: () {
-        Navigator.pop(context);
-      },
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Passed value $intVal"),
+        ElevatedButton(
+          child: const Text('Go back'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
     ));
   }
 }
