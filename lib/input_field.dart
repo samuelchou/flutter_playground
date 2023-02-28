@@ -26,7 +26,12 @@ class HomePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         TextField(
-          decoration: const InputDecoration(hintText: "Input your name here"),
+          decoration: const InputDecoration(
+            hintText: "Input your name here",
+            prefixIcon: Icon(Icons.abc),
+            errorText: "必填欄位",
+          ),
+          keyboardType: TextInputType.number,
           controller: textEditingController,
         ),
         ElevatedButton(
