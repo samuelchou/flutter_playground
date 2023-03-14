@@ -22,18 +22,22 @@ class HomePage extends StatelessWidget {
     return Center(
       widthFactor: 0.234,
       child: ElevatedButton(
-          onPressed: () => showMeTheDialog(context),
+          onPressed: () => showMeTheDialog(
+              context, "Hello Dialog"
+          ),
           child: const Text("A Dialog")),
     );
   }
 
-  void showMeTheDialog(BuildContext context) {
+  void showMeTheDialog(
+      BuildContext context, String messageText, [String? titleText]
+    ) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('I am Title'),
-            content: const Text('I am message'),
+            title: titleText != null ? Text(titleText) : null,
+            content: Text(messageText),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(24.0))),
             actions: <Widget>[
