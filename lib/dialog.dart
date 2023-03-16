@@ -34,9 +34,19 @@ class HomePage extends StatelessWidget {
                     titleText: "Input Text",
                     labelText: "Input a message",
                     hintText: "Hello");
-                showMeTheDialog(context, result?.isNotEmpty ?? false ? result! : "no words");
+                showMeTheDialog(context,
+                    result?.isNotEmpty ?? false ? result! : "no words");
               },
               child: const Text("Input something")),
+          ElevatedButton(
+              onPressed: () async {
+                String? result = await singleChoice(context,
+                    titleText: "Choose 1 fruit you like",
+                    ['Apple', 'Banana', 'Orange']);
+                showMeTheDialog(context,
+                    result?.isNotEmpty ?? false ? 'you like $result' : "no words");
+              },
+              child: const Text("Single Choice")),
         ],
       ),
     );
@@ -95,6 +105,29 @@ Future<String?> inputDialog(BuildContext context,
             },
           ),
         ],
+      );
+    },
+  );
+}
+
+Future<String?> singleChoice(BuildContext context, List<String> choices,
+    {String? titleText}) async {
+  List<Widget> options = [];
+  for (var option in choices) {
+    options.add(SimpleDialogOption(
+      onPressed: () {
+        Navigator.pop(context, option);
+      },
+      child: Text(option),
+    ));
+  }
+  return showDialog<String>(
+    context: context,
+    barrierDismissible: false, // to prevent from accidental closing.
+    builder: (BuildContext context) {
+      return SimpleDialog(
+        title: titleText != null ? Text(titleText) : null,
+        children: options,
       );
     },
   );
