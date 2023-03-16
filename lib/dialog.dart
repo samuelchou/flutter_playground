@@ -22,6 +22,7 @@ class HomePage extends StatelessWidget {
     return Center(
       child: Wrap(
         direction: Axis.vertical,
+        crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 20,
         children: [
           ElevatedButton(
@@ -29,8 +30,11 @@ class HomePage extends StatelessWidget {
               child: const Text("A Dialog")),
           ElevatedButton(
               onPressed: () async {
-                String? result = await inputDialog(context, "Input Text");
-                showMeTheDialog(context, result ?? "null");
+                String? result = await inputDialog(context,
+                    titleText: "Input Text",
+                    labelText: "Input a message",
+                    hintText: "Hello");
+                showMeTheDialog(context, result?.isNotEmpty ?? false ? result! : "no words");
               },
               child: const Text("Input something")),
         ],
@@ -61,12 +65,13 @@ class HomePage extends StatelessWidget {
   }
 }
 
-Future<String?> inputDialog(BuildContext context, [String? titleText]) async {
-  String inputData = '';
+Future<String?> inputDialog(BuildContext context,
+    {String? titleText, String? labelText, String? hintText}) async {
   return showDialog<String>(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: false, // to prevent from accidental closing.
     builder: (BuildContext context) {
+      String inputData = '';
       return AlertDialog(
         title: titleText != null ? Text(titleText) : null,
         content: Row(
@@ -75,9 +80,9 @@ Future<String?> inputDialog(BuildContext context, [String? titleText]) async {
                 child: TextField(
               autofocus: true,
               decoration: InputDecoration(
-                  labelText: '測試可輸入資料對話視窗', hintText: '請輸入資料...'),
+                  labelText: labelText ?? '', hintText: hintText ?? ''),
               onChanged: (value) {
-                inputData = value ?? '';
+                inputData = value;
               },
             ))
           ],
@@ -86,7 +91,7 @@ Future<String?> inputDialog(BuildContext context, [String? titleText]) async {
           TextButton(
             child: const Text('Confirm'),
             onPressed: () {
-              Navigator.of(context).pop(inputData ?? "");
+              Navigator.of(context).pop(inputData);
             },
           ),
         ],
