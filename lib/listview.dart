@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
         buttonText = 'ListView (Dynamic)';
         break;
       case ListType.dynamicWithSeparator:
-        // TODO: Handle this case.
+        buttonText = 'ListView (Dynamic + Separator)';
         break;
     }
     return ElevatedButton(
@@ -57,6 +57,7 @@ class HomePage extends StatelessWidget {
         children: [
           buttonWithListType(context, data, ListType.static),
           buttonWithListType(context, data, ListType.dynamic),
+          buttonWithListType(context, data, ListType.dynamicWithSeparator),
         ],
       ),
     );
@@ -90,7 +91,7 @@ class ListPage extends StatelessWidget {
         body = generateDynamicList();
         break;
       case ListType.dynamicWithSeparator:
-        // TODO: Handle this case.
+        body = generateDynamicListWithSeparator();
         break;
     }
 
@@ -148,5 +149,32 @@ class ListPage extends StatelessWidget {
           );
         });
   }
-}
 
+  Widget generateDynamicListWithSeparator() {
+    return ListView.separated(
+      itemCount: list.length,
+      itemBuilder: (BuildContext context, int i) {
+        var item = list[i];
+        return ListTile(
+          title: Text(item.name),
+          subtitle: Text('Note: ${item.notes}'),
+          leading: const Icon(Icons.account_box, color: Colors.amberAccent),
+          trailing: const Icon(Icons.keyboard_arrow_right),
+          selected: i % 3 == 0,
+          enabled: i % 4 != 0,
+          onTap: () {
+            debugPrint('tap item $i');
+          },
+          onLongPress: () {
+            debugPrint('Long Press item $i');
+          },
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        Widget divider1 = const Divider(color: Colors.pink, thickness: 3);
+        Widget divider2 = const Divider(color: Colors.green, thickness: 6);
+        return index % 3 == 0 ? divider1 : divider2;
+      },
+    );
+  }
+}
