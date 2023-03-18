@@ -49,17 +49,29 @@ class ListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgetList = <Widget>[];
-    for (MyItem item in list) {
+    List<ListTile> widgetList = <ListTile>[];
+    for (int i = 0; i < list.length; i++) {
+      var item = list[i];
       widgetList.add(ListTile(
         title: Text(item.name),
         subtitle: Text('Note: ${item.notes}'),
-        leading: const Icon(Icons.account_box, color: Colors.blue),
+        leading: const Icon(Icons.account_box, color: Colors.amberAccent),
+        trailing: const Icon(Icons.keyboard_arrow_right),
+        selected: i % 3 == 0,
+        enabled: i % 4 != 0,
+        onTap: () {
+          debugPrint('tap item $i');
+        },
+        onLongPress: () {
+          debugPrint('Long Press item $i');
+        },
       ));
     }
+    var newTiles = ListTile.divideTiles(tiles: widgetList, color: Colors.pink);
     return Scaffold(
       appBar: AppBar(title: const Text('List Page')),
-      body: ListView(children: widgetList,),
+      // body: ListView(children: widgetList,),
+      body: ListView(children: newTiles.toList(),),
     );
   }
 }
