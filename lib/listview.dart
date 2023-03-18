@@ -17,6 +17,31 @@ void main() {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  ElevatedButton buttonWithListType(
+      BuildContext context, List<MyItem> data, ListType listType) {
+    String buttonText = '';
+    switch (listType) {
+      case ListType.static:
+        buttonText = 'ListView';
+        break;
+      case ListType.dynamic:
+        buttonText = 'ListView (Dynamic)';
+        break;
+      case ListType.dynamicWithSeparator:
+        // TODO: Handle this case.
+        break;
+    }
+    return ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ListPage(list: data, listType: listType)));
+        },
+        child: Text(buttonText));
+  }
+
   @override
   Widget build(BuildContext context) {
     List<MyItem> data = [];
@@ -30,22 +55,8 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 20,
         children: [
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ListPage(list: data)));
-              },
-              child: const Text('Go to List Page')),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DynamicListPage(list: data)));
-              },
-              child: const Text('Go to List Page (Dynamic)')),
+          buttonWithListType(context, data, ListType.static),
+          buttonWithListType(context, data, ListType.dynamic),
         ],
       ),
     );
@@ -59,13 +70,38 @@ class MyItem {
   MyItem(this.name, this.notes);
 }
 
+enum ListType { static, dynamic, dynamicWithSeparator }
+
 class ListPage extends StatelessWidget {
   final List<MyItem> list;
+  final ListType listType;
 
-  const ListPage({Key? key, required this.list}) : super(key: key);
+  const ListPage({Key? key, required this.list, required this.listType})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Widget? body;
+    switch (listType) {
+      case ListType.static:
+        body = generateStaticList();
+        break;
+      case ListType.dynamic:
+        body = generateDynamicList();
+        break;
+      case ListType.dynamicWithSeparator:
+        // TODO: Handle this case.
+        break;
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('List Page')),
+      // body: ListView(children: widgetList,),
+      body: body ?? const Text('no data!'),
+    );
+  }
+
+  Widget generateStaticList() {
     List<ListTile> widgetList = <ListTile>[];
     for (int i = 0; i < list.length; i++) {
       var item = list[i];
@@ -85,24 +121,14 @@ class ListPage extends StatelessWidget {
       ));
     }
     var newTiles = ListTile.divideTiles(tiles: widgetList, color: Colors.pink);
-    return Scaffold(
-      appBar: AppBar(title: const Text('List Page')),
-      // body: ListView(children: widgetList,),
-      body: ListView(
-        children: newTiles.toList(),
-      ),
+    // return ListView(children: widgetList,);
+    return ListView(
+      children: newTiles.toList(),
     );
   }
-}
 
-class DynamicListPage extends StatelessWidget {
-  final List<MyItem> list;
-
-  const DynamicListPage({Key? key, required this.list}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    ListView listView = ListView.builder(
+  Widget generateDynamicList() {
+    return ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext context, int i) {
           var item = list[i];
@@ -121,9 +147,6 @@ class DynamicListPage extends StatelessWidget {
             },
           );
         });
-    return Scaffold(
-      appBar: AppBar(title: const Text('List Page')),
-      body: listView,
-    );
   }
 }
+
