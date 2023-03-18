@@ -25,13 +25,30 @@ class HomePage extends StatelessWidget {
     }
 
     return Center(
-        child: ElevatedButton(
-      child: const Text('Go to ListPage'),
-      onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ListPage(list: data)));
-      },
-    ));
+      child: Wrap(
+        direction: Axis.vertical,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 20,
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ListPage(list: data)));
+              },
+              child: const Text('Go to List Page')),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DynamicListPage(list: data)));
+              },
+              child: const Text('Go to List Page (Dynamic)')),
+        ],
+      ),
+    );
   }
 }
 
@@ -72,6 +89,39 @@ class ListPage extends StatelessWidget {
       appBar: AppBar(title: const Text('List Page')),
       // body: ListView(children: widgetList,),
       body: ListView(children: newTiles.toList(),),
+    );
+  }
+}
+
+class DynamicListPage extends StatelessWidget {
+  final List<MyItem> list;
+
+  const DynamicListPage({Key? key, required this.list}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    ListView listView = ListView.builder(
+      itemCount: list.length,
+        itemBuilder: (BuildContext context, int i) {
+        var item = list[i];
+        return ListTile(
+          title: Text(item.name),
+          subtitle: Text('Note: ${item.notes}'),
+          leading: const Icon(Icons.account_box, color: Colors.amberAccent),
+          trailing: const Icon(Icons.keyboard_arrow_right),
+          selected: i % 3 == 0,
+          enabled: i % 4 != 0,
+          onTap: () {
+            debugPrint('tap item $i');
+          },
+          onLongPress: () {
+            debugPrint('Long Press item $i');
+          },
+        );
+    });
+    return Scaffold(
+      appBar: AppBar(title: const Text('List Page')),
+      body: listView,
     );
   }
 }
