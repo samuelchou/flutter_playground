@@ -88,7 +88,9 @@ class ListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('List Page')),
       // body: ListView(children: widgetList,),
-      body: ListView(children: newTiles.toList(),),
+      body: ListView(
+        children: newTiles.toList(),
+      ),
     );
   }
 }
@@ -101,24 +103,24 @@ class DynamicListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ListView listView = ListView.builder(
-      itemCount: list.length,
+        itemCount: list.length,
         itemBuilder: (BuildContext context, int i) {
-        var item = list[i];
-        return ListTile(
-          title: Text(item.name),
-          subtitle: Text('Note: ${item.notes}'),
-          leading: const Icon(Icons.account_box, color: Colors.amberAccent),
-          trailing: const Icon(Icons.keyboard_arrow_right),
-          selected: i % 3 == 0,
-          enabled: i % 4 != 0,
-          onTap: () {
-            debugPrint('tap item $i');
-          },
-          onLongPress: () {
-            debugPrint('Long Press item $i');
-          },
-        );
-    });
+          var item = list[i];
+          return ListTile(
+            title: Text(item.name),
+            subtitle: Text('Note: ${item.notes}'),
+            leading: const Icon(Icons.account_box, color: Colors.amberAccent),
+            trailing: const Icon(Icons.keyboard_arrow_right),
+            selected: i % 3 == 0,
+            enabled: i % 4 != 0,
+            onTap: () {
+              debugPrint('tap item $i');
+            },
+            onLongPress: () {
+              debugPrint('Long Press item $i');
+            },
+          );
+        });
     return Scaffold(
       appBar: AppBar(title: const Text('List Page')),
       body: listView,
