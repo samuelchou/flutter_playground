@@ -35,14 +35,17 @@ class HomePage extends StatelessWidget {
           controller: textEditingController,
         ),
         ElevatedButton(
-          onPressed: saidHelloWithInput,
+          onPressed: () => saidHelloWithInput(context),
           child: const Text("Say Hello"),
         ),
       ],
     );
   }
 
-  void saidHelloWithInput() {
-    debugPrint("Hello ${textEditingController.text}");
+  void saidHelloWithInput(BuildContext context) {
+    final input = textEditingController.text;
+    debugPrint('Hello $input');
+    final snackBar = SnackBar(content: Text('Hello $input'));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
