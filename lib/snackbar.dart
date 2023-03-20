@@ -30,7 +30,11 @@ class HomePage extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () => snackBarWithUndo(context, 'Hello!'),
-          child: const Text('SnackBar with button'),
+          child: const Text('SnackBar With Button'),
+        ),
+        ElevatedButton(
+          onPressed: () => onlyOneSnackBar(context, 'Only one shows up!'),
+          child: const Text('Non-Stack SnackBar'),
         ),
       ],
     );
@@ -55,5 +59,11 @@ void snackBarWithUndo(BuildContext context, String text) {
           ScaffoldMessenger.of(context).showSnackBar(undoSnackBar);
         },
       ));
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+void onlyOneSnackBar(BuildContext context, String text) {
+  final snackBar = SnackBar(content: Text(text));
+  ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
