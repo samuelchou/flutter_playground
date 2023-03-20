@@ -19,13 +19,18 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Wrap(
+      direction: Axis.vertical,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 20,
       children: [
         ElevatedButton(
           onPressed: () => snackBar(context, 'Hello!'),
           child: const Text('Normal SnackBar'),
+        ),
+        ElevatedButton(
+          onPressed: () => snackBarWithUndo(context, 'Hello!'),
+          child: const Text('SnackBar with button'),
         ),
       ],
     );
@@ -34,5 +39,21 @@ class HomePage extends StatelessWidget {
 
 void snackBar(BuildContext context, String text) {
   final snackBar = SnackBar(content: Text(text));
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+void snackBarWithUndo(BuildContext context, String text) {
+  const undoSnackBar = SnackBar(content: Text('Undo.'));
+  final snackBar = SnackBar(
+      content: Text(text),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () {
+          debugPrint('undo');
+          // do something here to undo...
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(undoSnackBar);
+        },
+      ));
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
