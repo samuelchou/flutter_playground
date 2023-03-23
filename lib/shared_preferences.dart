@@ -48,14 +48,14 @@ class HomePage extends StatelessWidget {
           controller: textEditingController,
         ),
         ElevatedButton(
-          onPressed: () => saidHelloWithInput(context),
+          onPressed: () => saveInput(context),
           child: const Text('Save Your Name'),
         ),
       ],
     );
   }
 
-  void saidHelloWithInput(BuildContext context) {
+  void saveInput(BuildContext context) {
     final input = textEditingController.text;
     debugPrint('Hello $input');
     saveName(input);
